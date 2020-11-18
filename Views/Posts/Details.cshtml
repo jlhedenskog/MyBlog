@@ -1,0 +1,186 @@
+﻿@model MyBlog.Models.Post
+@using MyBlog.Utilities;
+
+@{ ViewData["Title"] = "Details"; }
+
+
+<style>
+
+    #preview-image{
+        max-height: 300px;
+        max-width: 300px;
+
+    }
+
+    .media-body{
+        float:right;
+
+    }
+
+    #userpicture{
+        float: left;
+    }
+
+    #LikeIcon {
+        transition: ease-in-out;
+    }
+
+
+</style>
+
+<!-- Page Content -->
+<div class="container">
+
+    <div class="row">
+
+        <!-- Post Content Column -->
+        <div class="col-lg-12">
+            <div class="card rounded mt-5">
+                <div class="card card-body">
+                    <div class="mx-auto">
+
+
+                        <!-- Preview Image -->
+                        <img class="rounded" id="preview-image" src="@MyBlog.Utilities.ImageHelper.GetImage(Model.Image, Model.FileName)" alt="">
+
+                        <!-- Date/Time -->
+                        <p>@Model.FormatCreateDate()</p>
+
+                        <!-- Title -->
+                        <h1 class="mt-3">@Model.Title</h1>
+                        <!-- Author -->
+                        @*<img class="col-12 col-lg-6 img-fluid p-0" src="Images/Me.jpg" />*@
+                        <p class="lead">by <a asp-controller="Home" asp-action="About">Jessica Hedenskog</a>, Full-Stack Web Developer</p>
+
+
+                        <!-- Post Content -->
+                    </div>
+                        <p>@Html.Raw(Model.Content)</p>
+
+                       
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <i id="LikeIcon" class="@((bool)ViewData["UserLiked"] ? "fas" : "far") fa-heart btn" onclick="AddClick()"></i>
+                                <span id="CountedClicks">Likes @Model.Likes.Count</span><br>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="far fa-comment mr-2"></i>
+                                <span>@Model.Comments.Count Comments</span>
+                            </div>
+                        </div>
+                      
+                </div>
+            </div>
+            
+            <div class="card rounded mt-5">
+                <div cass="card body">
+                    <div class="row">
+
+                        <h5 class="col-6 text-left ml-5 mt-3">Comments</h5>
+                        @*<h5 class="col-6">@Model.Comments.Count Comments</h5>*@
+                    </div>
+                    <hr />
+                    @foreach (var comment in Model.Comments.OrderByDescending(c => c.Created))
+                    {<!-- Single Comment -->
+                                        <div class="media mb-4 border-bottom">
+                                            <div class="pl-5">
+                                                <img height="50" width="50" class="d-flex mr-3 rounded-circle " id="userpicture" src="@ImageHelper.GetImage(comment.BlogUser.ProfilePicture, comment.BlogUser.FileName)" alt="">
+                                                <div class="media-body">
+                                                    <p class="mb-0">@comment.Content</p>
+                                                    <p class="mt-0 text-info">@comment.BlogUser.DisplayName on @comment.FormatCreateDate()</p>
+
+                                                    
+
+                                                </div>
+                                            </div>
+                                        </div>}
+                </div>
+            </div>
+
+            <div class="card my-4">
+                <h5 class="card-header">Leave a Comment:</h5>
+                <div class="card-body">
+                    @*If and only if the user is logged in will we show them this Add Comment form*@
+                    @if (User.Identity.IsAuthenticated)
+                    {
+        <form asp-controller="Comments" asp-action="Create">
+            @Html.Hidden("PostId", Model.Id)
+            <div class="form-group">
+                <textarea name="Content" class="form-control" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>}
+                </div>
+            </div>
+        </div>
+            </div>
+            </div>
+
+
+
+
+<script>
+    var Clicks = @Model.Likes.Count;
+    var userLiked = @Json.Serialize(ViewData["UserLiked"]);
+    var userAuthen = @Json.Serialize(User.Identity.IsAuthenticated);
+    var likeIcon = document.getElementById('LikeIcon');
+
+    function AddClick() {
+        if (userAuthen) {
+            if (userLiked) {
+                Clicks = Clicks - 1;
+                likeIcon.classList.remove('fas');
+                likeIcon.classList.add('far');
+                userLiked = !userLiked;
+            } else {
+                Clicks = Clicks + 1;
+                likeIcon.classList.add('fas');
+                likeIcon.classList.remove('far');
+                userLiked = !userLiked;
+            }
+            sendLikeToDatabase(userLiked)
+        }
+
+        document.getElementById('CountedClicks').innerHTML = 'Likes ' +  Clicks;
+    }
+
+    function sendLikeToDatabase(boolLikeVar) {
+        var formData = new FormData();
+        formData.append('boolLike', boolLikeVar);
+        formData.append('postId', @Model.Id);
+
+        fetch('../postlike', {
+            method: 'post',
+            body: formData
+        })
+    }
+</script>
+            <!-- Comment with nested comments -->
+            @*<div class="media mb-4">
+            <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+            <div class="media-body">
+                <h5 class="mt-0">Commenter Name</h5>
+                Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+
+                <div class="media mt-4">
+                    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                    <div class="media-body">
+                        <h5 class="mt-0">Commenter Name</h5>
+                        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                    </div>
+                </div>
+
+                <div class="media mt-4">
+                    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                    <div class="media-body">
+                        <h5 class="mt-0">Commenter Name</h5>
+                        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                    </div>
+                </div>
+
+            </div>
+        </div>*@
+
+        @*</div>*@
+
+        

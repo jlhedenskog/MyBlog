@@ -1,0 +1,277 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Jess Coding - A Coding Blog</title>
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <link href="~/css/blog-home.css" rel="stylesheet" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Chewy&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
+    <script src="https://kit.fontawesome.com/3786ebd258.js" crossorigin="anonymous"></script>
+
+
+
+
+    <style>
+        #layoutFoot{
+            position: relative;
+            bottom: 0;
+        }
+
+        html {
+            min-height:100vh;
+        }
+
+        .chewy {
+            font-family: 'Chewy', cursive;
+        }
+
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-primary bg-primary fixed-top">
+        <div class="container">
+
+            <div class="text-center">
+                <a class="navbar-brand text-white chewy" asp-controller="Home" asp-action="Index">Jess Coding</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                @if (User.IsInRole("Admin"))
+                {
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link text-white chewy" asp-area="" asp-controller="Blogs" asp-action="Create">Create Blog</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white chewy" asp-area="" asp-controller="Posts" asp-action="Create">Create Post</a>
+                        </li>
+                    </ul>
+                }
+
+
+
+            </div>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link text-white chewy" asp-controller="Home" asp-action="Index">
+                        Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white chewy" asp-area="" asp-controller="Home" asp-action="About">About</a>
+                </li>
+                <div class="dropdown show">
+                    <a class="dropdown-toggle text-dark-black nav-link" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Categories
+                    </a>
+
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item nav-link text-dark-black chewy" asp-area="" asp-controller="Blogs" asp-action="Create">💻 Create Blog</a>
+                        <a class="dropdown-item nav-link text-dark-black chewy" asp-area="" asp-controller="Blogs" asp-action="Index">💻 All Blogs</a>
+                    </div>
+                </div>
+                <li class="nav-item">
+                    <a class="nav-link text-white chewy" target=_blank href="https://jessicas-portfolio.netlify.app/">Portfolio</a>
+                </li>
+
+
+            </ul>
+            <partial name="_LoginPartial" />
+        </div>
+    </nav>
+    
+    <!-- Page Content -->
+    <div class="container">
+        @RenderBody()
+
+        <div class="row">
+
+
+
+        </div>
+
+    </div>
+    <!-- /.row -->
+    <!-- /.container -->
+    <!-- Footer -->
+    <footer class="py-5 bg-primary" id="layoutFoot">
+        <div class="container">
+            <div class="row d-flex justify-content-center mb-3">
+               <a href="https://www.linkedin.com/in/jessica-hedenskog/" target="_blank"><i class="fab fa-linkedin fa-2x text-white mr-3"></i></a>
+                    <a href="https://github.com/jlhedenskog" target="_blank"><i class="fab fa-github-square fa-2x text-white mr-3"></i></a>
+                    <a href="https://twitter.com/SheWhoCodesALot" target="_blank"><i class="fab fa-twitter-square fa-2x text-white"></i></a>
+
+
+                
+            </div>
+            <!--<-->@*div class="row d-flex justify-content-center mb-3">
+                <i class="fab fa-github-square fa-2x text-white mr-3"></i>
+                <i class="fab fa-linkedin fa-2x text-white mr-3"></i>
+                <i class="fab fa-twitter-square fa-2x text-white"></i>
+            </div>*@
+            <div class="row d-flex justify-content-center">
+                <p class="m-0 text-center text-white chewy">Copyright &copy; Jess Coding 2020</p>
+            </div>
+
+
+
+
+
+        </div>
+        <!-- /.container -->
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/css/bootstrap.bundle.min.js"></script>
+
+
+
+    <script src="https://cdn.tiny.cloud/1/maugg783czclhyyumju9182yn01wyfg2fphw4rxyhzctpnja/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            tinymce.init({
+                selector: '#Content'
+            });
+            $('.table').DataTable();
+        })
+    </script>
+
+    @*<script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>*@
+    @RenderSection("Scripts", required: false)
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+@*<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>@ViewData["Title"] - My Blog</title>
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+        <link href="https://fonts.googleapis.com/css2?family=Chewy&display=swap" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
+
+
+
+
+        <style>
+            .chewy {
+                font-family: 'Chewy', cursive;
+            }
+        </style>
+
+    </head>
+    <body>
+        <header>
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3 bg-primary">
+                <div class="container">
+                    <a class="navbar-brand text-white chewy" asp-area="" asp-controller="Home" asp-action="Index">My Blog</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                        <partial name="_LoginPartial" />
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link text-white chewy" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white chewy" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            </li>
+                            <div class="dropdown show">
+                                <a class="dropdown-toggle text-white nav-link chewy" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Blog
+                                </a>
+
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item nav-link text-dark-black chewy" asp-area="" asp-controller="Blogs" asp-action="Create">Create Blog</a>
+                                    <a class="dropdown-item nav-link text-dark-black chewy" asp-area="" asp-controller="Blogs" asp-action="Index">All Blogs</a>
+                                </div>
+                            </div>
+                            <div class="dropdown show">
+                                <a class="dropdown-toggle nav-link text-white chewy" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Post
+                                </a>
+
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item nav-link text-dark-black chewy" asp-area="" asp-controller="Posts" asp-action="Create">Create Post</a>
+                                    <a class="dropdown-item nav-link text-dark-black chewy" asp-area="" asp-controller="Posts" asp-action="Index">All Posts</a>
+                                </div>
+                            </div>
+                            <li class="nav-item">
+                                <a class="nav-link text-white chewy" target=_blank href="https://jessicas-portfolio.netlify.app/">Portfolio</a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+
+        <footer class="border-top footer text-muted bg-primary">
+            <div class="container text-white chewy">
+                &copy; 2020 - MyBlog - <a class="text-white" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
+
+        </footer>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="https://cdn.tiny.cloud/1/maugg783czclhyyumju9182yn01wyfg2fphw4rxyhzctpnja/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script>
+
+        <script>
+            $(document).ready(function () {
+                tinymce.init({
+                    selector: '#Content'
+                });
+                $('.table').DataTable();
+            })
+        </script>
+
+
+
+        @RenderSection("Scripts", required: false)
+    </body>
+    </html>*@
